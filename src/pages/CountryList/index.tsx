@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CountryCard, Load, Header, Spinner } from "./../../components";
+import { CountryCard, Header, Spinner } from "./../../components";
 import { useQuery, useLazyQuery } from "@apollo/client";
 import {
   LIST_COUNTRY,
