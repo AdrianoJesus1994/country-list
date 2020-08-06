@@ -10,16 +10,19 @@ interface SearchProps {
 
 const Search: React.FC<SearchProps> = ({ onCancel, onSearch }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [text, setText] = useState<string>("");
 
   function handleClose() {
     if (open && typeof onCancel === "function") {
       onCancel();
+      setText("");
     }
     setOpen(!open);
   }
 
   function handleChangeTextField(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
+    setText(value);
     if (value.trim() !== "" && typeof onSearch === "function") {
       onSearch(value);
     } else if (typeof onCancel === "function") {
@@ -29,7 +32,12 @@ const Search: React.FC<SearchProps> = ({ onCancel, onSearch }) => {
 
   return (
     <Container>
-      <TextField type="text" opened={open} onChange={handleChangeTextField} />
+      <TextField
+        type="text"
+        opened={open}
+        onChange={handleChangeTextField}
+        value={text}
+      />
       <ButtonOpen onClick={handleClose}>
         {open ? (
           <MdClose color="#fff" size={22} />

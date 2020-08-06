@@ -31,13 +31,11 @@ const CountryList: React.FC = () => {
 
   useEffect(() => {
     if (listFiltered) {
-      console.log(listFiltered);
       setCountries(listFiltered.Country);
     }
   }, [listFiltered]);
 
   function onSearch(query: string) {
-    console.log(query);
     findCountry({ variables: { name: query } });
   }
 
