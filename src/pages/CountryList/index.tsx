@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CountryCard, Header, Spinner } from "./../../components";
-import { useQuery, useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import {
   LIST_COUNTRY,
   FIND_COUNTRY,
@@ -12,7 +12,7 @@ import { Container } from "./styles";
 const CountryList: React.FC = () => {
   const [countriesList, setCountriesList] = useState<Array<any>>([]);
   const [countries, setCountries] = useState<Array<any>>([]);
-  const [getCuntries, { loading, error, data }] = useLazyQuery(LIST_COUNTRY);
+  const [getCuntries, { loading, data }] = useLazyQuery(LIST_COUNTRY);
   const [
     findCountry,
     { data: listFiltered, loading: loadSearch },
