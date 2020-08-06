@@ -64,7 +64,7 @@ const Details: React.FC<any> = ({ history, match }) => {
       </NavigationContainer>
       <DetailContainer>
         <header>
-          <MdRoom size={26} />
+          <MdRoom size={26} color={colors.primary} />
           <h2>{country?.name}</h2>
         </header>
         <div className="detail-body">

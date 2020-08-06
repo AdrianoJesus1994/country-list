@@ -30,7 +30,9 @@ const CountryList: React.FC = () => {
     <Container>
       {data &&
         data.Country &&
-        data.Country.map((item: any) => <CountryCard country={item} />)}
+        data.Country.map((item: any) => (
+          <CountryCard country={item} key={item._id} />
+        ))}
     </Container>
   );
 };
