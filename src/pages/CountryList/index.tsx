@@ -1,39 +1,63 @@
-import React, { useEffect } from "react";
-import { CountryCard, Load } from "./../../components";
-import { gql, useQuery } from "@apollo/client";
+import React, { useEffect, useState } from "react";
+import { CountryCard, Load, Header, Spinner } from "./../../components";
+import { useQuery, useLazyQuery } from "@apollo/client";
+import {
+  LIST_COUNTRY,
+  FIND_COUNTRY,
+} from "./../../Apollo/Queries/CountryQueries";
+import CountryContext from "./context";
 
 import { Container } from "./styles";
 
-const LIST_COUNTRY = gql`
-  query ListCountry {
-    Country {
-      _id
-      name
-      capital
-      flag {
-        svgFile
-      }
-    }
-  }
-`;
-
 const CountryList: React.FC = () => {
-  const { loading, error, data } = useQuery(LIST_COUNTRY);
+  const [countriesList, setCountriesList] = useState<Array<any>>([]);
+  const [countries, setCountries] = useState<Array<any>>([]);
+  const [getCuntries, { loading, error, data }] = useLazyQuery(LIST_COUNTRY);
+  const [
+    findCountry,
+    { data: listFiltered, loading: loadSearch },
+  ] = useLazyQuery(FIND_COUNTRY);
 
   useEffect(() => {
-    if (data) console.log(data.Country);
+    if (data) {
+      setCountries(data.Country);
+      setCountriesList(data.Country);
+    }
   }, [data]);
 
-  if (loading) return <Load />;
+  useEffect(() => {
+    getCuntries();
+  }, [getCuntries]);
+
+  useEffect(() => {
+    if (listFiltered) {
+      console.log(listFiltered);
+      setCountries(listFiltered.Country);
+    }
+  }, [listFiltered]);
+
+  function onSearch(query: string) {
+    console.log(query);
+    findCountry({ variables: { name: query } });
+  }
+
+  function onCancelSearch() {
+    console.log("cancel called");
+    setCountries(countriesList);
+  }
 
   return (
-    <Container>
-      {data &&
-        data.Country &&
-        data.Country.map((item: any) => (
-          <CountryCard country={item} key={item._id} />
-        ))}
-    </Container>
+    <CountryContext.Provider value={{ onSearch, onCancel: onCancelSearch }}>
+      <Header />
+      {loading || (loadSearch && <Spinner />)}
+      <Container>
+        {countries &&
+          countries.length > 0 &&
+          countries.map((item: any) => (
+            <CountryCard country={item} key={item._id} />
+          ))}
+      </Container>
+    </CountryContext.Provider>
   );
 };
 

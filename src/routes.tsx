@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { Load, Header } from "./components";
+import { Load } from "./components";
 
 import GlobalStyles from "./styles/global";
 
@@ -11,7 +11,6 @@ const Routes = () => {
   return (
     <BrowserRouter>
       <GlobalStyles />
-      <Header />
       <Suspense fallback={<Load />}>
         <Switch>
           <Route path="/" component={CountryList} exact />

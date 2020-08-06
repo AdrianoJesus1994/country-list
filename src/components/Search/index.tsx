@@ -22,6 +22,8 @@ const Search: React.FC<SearchProps> = ({ onCancel, onSearch }) => {
     const { value } = event.target;
     if (value.trim() !== "" && typeof onSearch === "function") {
       onSearch(value);
+    } else if (typeof onCancel === "function") {
+      onCancel();
     }
   }
 

@@ -4,35 +4,10 @@ import { MdRoom, MdInfo, MdExplore, MdArrowBack } from "react-icons/md";
 import { Container, DetailContainer, NavigationContainer } from "./styles";
 import colors from "../../utils/colors";
 import Map from "google-map-react";
-import { gql, useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
+import { GET_COUNTRY } from "./../../Apollo/Queries/CountryQueries";
 import { Country } from "../../interfaces/country";
 import { Load } from "../../components";
-
-const GET_COUNTRY = gql`
-  query ListCountry($countryId: String!) {
-    Country(_id: $countryId) {
-      _id
-      name
-      capital
-      area
-      population
-      location {
-        latitude
-        longitude
-      }
-      flag {
-        svgFile
-      }
-      currencies {
-        name
-        symbol
-      }
-      topLevelDomains {
-        name
-      }
-    }
-  }
-`;
 
 const Details: React.FC<any> = ({ history, match }) => {
   const [country, setCountry] = useState<Country | undefined>(undefined);
