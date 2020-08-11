@@ -46,7 +46,7 @@ const CountryList: React.FC = () => {
 
   return (
     <CountryContext.Provider value={{ onSearch, onCancel: onCancelSearch }}>
-      <Header />
+      <Header showSearche />
       {loading || (loadSearch && <Spinner />)}
       <Container>
         {countries &&

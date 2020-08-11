@@ -5,7 +5,11 @@ import { Search } from "./../";
 
 import CountryContext from "./../../pages/CountryList/context";
 
-const Herder: React.FC = () => {
+interface HeaderProps {
+  showSearche?: boolean;
+}
+
+const Herder: React.FC<HeaderProps> = ({ showSearche }) => {
   const { onSearch, onCancel } = useContext(CountryContext);
 
   function search(query: string): void {
@@ -15,7 +19,7 @@ const Herder: React.FC = () => {
   return (
     <Container>
       <h1>CountryList</h1>
-      <Search onSearch={search} onCancel={onCancel} />
+      {showSearche && <Search onSearch={search} onCancel={onCancel} />}
     </Container>
   );
 };

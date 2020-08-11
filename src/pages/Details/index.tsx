@@ -7,7 +7,7 @@ import Map from "google-map-react";
 import { useLazyQuery } from "@apollo/client";
 import { GET_COUNTRY } from "./../../Apollo/Queries/CountryQueries";
 import { Country } from "../../interfaces/country";
-import { Load } from "../../components";
+import { Load, Header } from "../../components";
 
 const Details: React.FC<any> = ({ history, match }) => {
   const [country, setCountry] = useState<Country | undefined>(undefined);
@@ -33,78 +33,81 @@ const Details: React.FC<any> = ({ history, match }) => {
   if (loading) return <Load />;
 
   return (
-    <Container>
-      <NavigationContainer>
-        <MdArrowBack size={26} onClick={backPage} className="back-button" />
-      </NavigationContainer>
-      <DetailContainer>
-        <header>
-          <MdRoom size={26} color={colors.primary} />
-          <h2>{country?.name}</h2>
-        </header>
-        <div className="detail-body">
-          <img src={country?.flag.svgFile} alt="" />
-          <div className="divider">
-            <MdInfo color={colors.secoundary} size={26} />
-            Informations
+    <>
+      <Header />
+      <Container>
+        <NavigationContainer>
+          <MdArrowBack size={26} onClick={backPage} className="back-button" />
+        </NavigationContainer>
+        <DetailContainer>
+          <header>
+            <MdRoom size={26} color={colors.primary} />
+            <h2>{country?.name}</h2>
+          </header>
+          <div className="detail-body">
+            <img src={country?.flag.svgFile} alt="" />
+            <div className="divider">
+              <MdInfo color={colors.secoundary} size={26} />
+              Informations
+            </div>
+            <section>
+              <div className="item">
+                <span>Population</span>
+                <p>{country?.population}</p>
+              </div>
+              <div className="item">
+                <span>Capital</span>
+                <p>{country?.capital}</p>
+              </div>
+              <div className="item">
+                <span>Area</span>
+                <p>{country?.area} km²</p>
+              </div>
+              <div className="item">
+                <span>Currency</span>
+                <p>
+                  {country?.currencies?.map((c) => (
+                    <>{c.name}</>
+                  ))}
+                </p>
+              </div>
+              <div className="item">
+                <span>Top Level Domain</span>
+                <p>
+                  {country?.topLevelDomains?.map((domain) => (
+                    <>{domain.name}</>
+                  ))}
+                </p>
+              </div>
+            </section>
+            <div className="divider">
+              <MdExplore color={colors.secoundary} size={26} />
+              Location
+            </div>
+            <section className="map-container">
+              {country?.location && (
+                <Map
+                  bootstrapURLKeys={{
+                    key: "AIzaSyC16AzrS3l5wCYs3ECBCUbEazVkZJguyjQ",
+                  }}
+                  yesIWantToUseGoogleMapApiInternals
+                  defaultCenter={{
+                    lat: country?.location.latitude,
+                    lng: country?.location.longitude,
+                  }}
+                  defaultZoom={5}
+                >
+                  <AnyReactComponent
+                    lat={country?.location.latitude}
+                    lng={country?.location.longitude}
+                  />
+                </Map>
+              )}
+            </section>
           </div>
-          <section>
-            <div className="item">
-              <span>Population</span>
-              <p>{country?.population}</p>
-            </div>
-            <div className="item">
-              <span>Capital</span>
-              <p>{country?.capital}</p>
-            </div>
-            <div className="item">
-              <span>Area</span>
-              <p>{country?.area} km²</p>
-            </div>
-            <div className="item">
-              <span>Currency</span>
-              <p>
-                {country?.currencies?.map((c) => (
-                  <>{c.name}</>
-                ))}
-              </p>
-            </div>
-            <div className="item">
-              <span>Top Level Domain</span>
-              <p>
-                {country?.topLevelDomains?.map((domain) => (
-                  <>{domain.name}</>
-                ))}
-              </p>
-            </div>
-          </section>
-          <div className="divider">
-            <MdExplore color={colors.secoundary} size={26} />
-            Location
-          </div>
-          <section className="map-container">
-            {country?.location && (
-              <Map
-                bootstrapURLKeys={{
-                  key: "AIzaSyC16AzrS3l5wCYs3ECBCUbEazVkZJguyjQ",
-                }}
-                yesIWantToUseGoogleMapApiInternals
-                defaultCenter={{
-                  lat: country?.location.latitude,
-                  lng: country?.location.longitude,
-                }}
-                defaultZoom={5}
-              >
-                <AnyReactComponent
-                  lat={country?.location.latitude}
-                  lng={country?.location.longitude}
-                />
-              </Map>
-            )}
-          </section>
-        </div>
-      </DetailContainer>
-    </Container>
+        </DetailContainer>
+      </Container>
+    </>
   );
 };
 
